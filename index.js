@@ -1,4 +1,5 @@
 import express from 'express';
+import { } from 'dotenv/config';
 import bodyParser from 'body-parser';
 import {
   graphqlExpress,
@@ -12,6 +13,7 @@ import createLoaders from './api/loaders';
 
 const GQL_PORT = 5000;
 const app = express();
+const PORT = process.env.PORT;
 
 app.use('*', cors());
 

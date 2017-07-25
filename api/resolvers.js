@@ -1,10 +1,12 @@
 import fetch from 'node-fetch';
 import * as json from './jsonServer';
+import pool from '../database/index';
+import { getUsers } from './postgresDB';
 
 const resolveFunctions = {
   Query: {
     users() {
-      return json.getUsers()
+      return getUsers()
     },
     user: (root, {id}, context) => {
       // return json.getUser(id)

@@ -1,5 +1,7 @@
 import DataLoader from 'dataloader';
-import { myItems, borrowedBy, getUser, getItem } from './jsonServer';
+import { myItems, borrowedBy, getItem } from './jsonServer';
+import { getUser } from './postgresDB';
+// import { getFirebaseUser } from './firebase';
 
 export default function() {
   return {
