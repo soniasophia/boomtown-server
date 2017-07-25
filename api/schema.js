@@ -15,7 +15,7 @@ const typeDefs = `
     id: ID!
     title: String!
     description: String!
-    imageURL: String!
+    imageUrl: String
     tags: [String]
     itemOwner: User!
     createdOn: Int!
@@ -28,6 +28,16 @@ const typeDefs = `
     user(id: ID!): User
     items: [Item]
     item(id: ID!): Item
+  }
+
+  type Mutation {
+    addItem(
+      title: String!
+      description: String!
+      imageUrl: String!
+      itemOwner: ID!
+      tags: [String]!
+    ): Item
   }
 `;
 
