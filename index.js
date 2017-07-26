@@ -17,6 +17,11 @@ const PORT = process.env.PORT;
 
 app.use('*', cors());
 
+app.use('/graphql', (req, res, next) => {
+  // TODO: Add Firebase Token Validation
+  next();
+});
+
 app.use('/graphql', bodyParser.json(), graphqlExpress({ 
   schema, 
   context: {
