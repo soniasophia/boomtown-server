@@ -59,8 +59,8 @@ const resolveFunctions = {
       return json.postNewItem(newItem)
     },
 
-    addUser(root, args) {
-      return psql.createUser(args)
+    addUser(root, args, context) {
+      return psql.createUser(args, context)
     }
   }
 };

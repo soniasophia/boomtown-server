@@ -7,6 +7,7 @@ import {
 } from 'graphql-server-express';
 
 import schema from './api/schema';
+import admin from './database/firebase';
 import cors from 'cors';
 
 import createLoaders from './api/loaders';
@@ -16,16 +17,31 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use('*', cors());
+app.use(bodyParser.json());
 
-app.use('/graphql', (req, res, next) => {
-  // TODO: Add Firebase Token Validation
-  next();
-});
 
-app.use('/graphql', bodyParser.json(), graphqlExpress({ 
-  schema, 
-  context: {
-    loaders: createLoaders()
+// app.use('/graphql', (req, res, next) => {
+//   const { operationName, variables } = req.body
+//   if (operationName && operationName === 'addUser') {
+//     admin.auth().createCustomToken(variables.email).then(function (token) {
+//       req.body.token = token
+//       next()
+//     }).catch(function (error) {
+//       console.log(error)
+//       next()
+//     })
+//   } else {
+//     next()
+//   }
+// });
+
+
+app.use('/graphql', graphqlExpress(function(req, res) {
+  return {
+    schema,
+    context: {
+      loaders: createLoaders()
+    }
   }
 }));
 
