@@ -9,8 +9,16 @@ function renameId(rows) {
       }),{})
 }
 
+function renameItemId(rows) {
+      return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
+        acc = {...row, id: row.itemid}
+        delete acc.itemid
+        return acc
+      }),{})
+}
+
 export function getUsers() {
-  return pool.query(`SELECT * from user_profiles`)
+  return pool.query(`SELECT * FROM user_profiles`)
     .then(response => {
       return renameId(response.rows);
     }).catch(errors => console.log(errors));
@@ -19,7 +27,7 @@ export function getUsers() {
 export function getUser(id) {
   return new Promise(async(resolve, reject) => {
     try {
-      let user = await pool.query(`SELECT * from user_profiles WHERE userid = '${id}'`)
+      let user = await pool.query(`SELECT * FROM user_profiles WHERE userid = '${id}'`)
       const fbuser = await admin.auth().getUser(id)
       user = renameId(user.rows)[0];
       user = {...user, email: fbuser.email}
@@ -51,4 +59,54 @@ export function createUser(args) {
     }
   } 
 )}
+
+export function getItems() {
+  return pool.query(`SELECT * FROM items`)
+      .then(response => response.rows)
+      .catch(errors => console.log(errors));
+}
+
+export function getItem(id) {
+  return new Promise(async(resolve, reject) => {
+      try {
+        let item = await pool.query(`SELECT * FROM items WHERE itemid = '${id}'`)
+        item = renameItemId(item.rows)[0];
+        // item = {...item, imageUrl: fbuser.imageUrl}
+        resolve(item);
+      } catch (e) {
+          console.log(e);
+          reject(e);
+        }
+    })
+}
+
+export function myItems(id) {
+  return pool.query(`SELECT * FROM items WHERE itemowner = '${id}'`)
+      .then(response => {
+        return (response.rows);
+      })
+      .catch(errors => console.log(errors));
+}
+
+export function borrowedBy(id) {
+  return pool.query(`SELECT * FROM items WHERE borrower = '${id}'`)
+      .then(response => {
+        return (response.rows);
+      })
+      .catch(errors => console.log(errors));
+}
+
+export function postNewItem(newItem) {
+  return fetch('http://localhost:3001/items/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+      }) 
+      .then(response => response.json())
+      .catch(errors => console.log(errors));
+}
+
+
 

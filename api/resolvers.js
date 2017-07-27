@@ -14,11 +14,11 @@ const resolveFunctions = {
       return context.loaders.IndividualUsers.load(id);
     },
     items() {
-      return json.getItems()
+      return psql.getItems()
     },
     item: (root, {id}, context) => {
       // return json.getItem(id)
-      return context.loaders.IndividualItems.load(user.id);
+      return context.loaders.IndividualItems.load(id);
     }
   },
 
