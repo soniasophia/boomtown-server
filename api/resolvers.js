@@ -23,8 +23,11 @@ const resolveFunctions = {
   },
 
   Item: {
+    tags: (items) => {
+      return psql.getItemTags(item.id);
+    },
     itemowner(item, args, context) {
-      return context.loaders.IndividualUsers.load(item.itemowner)
+      return context.loaders.IndividualUsers.load(item.itemowner);
     },
     borrower(item, args, context) {
       if (!item.borrower) return null;
@@ -45,18 +48,19 @@ const resolveFunctions = {
 
     Mutation: {
     addItem(root, args) {
-      const newItem = {
-        title: args.title,
-        imageurl: args.imageurl,
-        itemowner: args.itemowner,
-        description: args.description,
-        createdon: Math.floor(Date.now() / 1000),
-        tags: args.tags,
-        available: true,
-        borrower: null
-      };
+      return psql.newItem(args)
+      // const newItem = {
+      //   title: args.title,
+      //   imageurl: args.imageurl,
+      //   itemowner: args.itemowner,
+      //   description: args.description,
+      //   createdon: Math.floor(Date.now() / 1000),
+      //   tags: args.tags,
+      //   available: true,
+      //   borrower: null
+      // };
 
-      return json.postNewItem(newItem)
+      // return json.postNewItem(newItem)
     },
 
     addUser(root, args, context) {
