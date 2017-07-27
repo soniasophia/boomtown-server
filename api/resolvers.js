@@ -23,8 +23,8 @@ const resolveFunctions = {
   },
 
   Item: {
-    itemOwner(item, args, context) {
-      return context.loaders.IndividualUsers.load(item.itemOwner)
+    itemowner(item, args, context) {
+      return context.loaders.IndividualUsers.load(item.itemowner)
     },
     borrower(item, args, context) {
       if (!item.borrower) return null;
@@ -47,10 +47,10 @@ const resolveFunctions = {
     addItem(root, args) {
       const newItem = {
         title: args.title,
-        imageUrl: args.imageUrl,
-        itemOwner: args.itemOwner,
+        imageurl: args.imageurl,
+        itemowner: args.itemowner,
         description: args.description,
-        createdOn: Math.floor(Date.now() / 1000),
+        createdon: Math.floor(Date.now() / 1000),
         tags: args.tags,
         available: true,
         borrower: null

@@ -1,26 +1,26 @@
 import pool from '../database/index';
 import admin from '../database/firebase';
 
-function renameId(rows) {
-      return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
-        acc = {...row, id: row.userid}
-        delete acc.userid
-        return acc
-      }),{})
-}
+// function renameId(rows) {
+//       return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
+//         acc = {...row, id: row.userid}
+//         delete acc.userid
+//         return acc
+//       }),{})
+// }
 
-function renameItemId(rows) {
-      return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
-        acc = {...row, id: row.itemid}
-        delete acc.itemid
-        return acc
-      }),{})
-}
+// function renameItemId(rows) {
+//       return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
+//         acc = {...row, id: row.itemid}
+//         delete acc.itemid
+//         return acc
+//       }),{})
+// }
 
 export function getUsers() {
   return pool.query(`SELECT * FROM user_profiles`)
     .then(response => {
-      return renameId(response.rows);
+      return (response.rows);
     }).catch(errors => console.log(errors));
 }
 
@@ -29,7 +29,7 @@ export function getUser(id) {
     try {
       let user = await pool.query(`SELECT * FROM user_profiles WHERE userid = '${id}'`)
       const fbuser = await admin.auth().getUser(id)
-      user = renameId(user.rows)[0];
+      user = (user.rows)[0];
       user = {...user, email: fbuser.email}
       resolve(user);
     } catch (e) {
@@ -47,7 +47,7 @@ export function createUser(args) {
         password: args.password
       })
       const query = {
-      text: 'INSERT INTO user_profiles(fullname, bio, userid) VALUES($1, $2, $3) RETURNING *',
+      text: 'INSERT INTO user_profiles(fullname, bio, id) VALUES($1, $2, $3) RETURNING *',
       values: [args.fullname, args.bio, fbuser.uid],
       }
       let pgUser = await pool.query(query)
@@ -69,9 +69,9 @@ export function getItems() {
 export function getItem(id) {
   return new Promise(async(resolve, reject) => {
       try {
-        let item = await pool.query(`SELECT * FROM items WHERE itemid = '${id}'`)
-        item = renameItemId(item.rows)[0];
-        // item = {...item, imageUrl: fbuser.imageUrl}
+        let item = await pool.query(`SELECT * FROM items WHERE id = '${id}'`)
+        item = (item.rows)[0];
+        // item = {...item, imageurl: fbuser.imageurl}
         resolve(item);
       } catch (e) {
           console.log(e);
@@ -123,6 +123,10 @@ export function getItemTags(itemId) {
           ON itemtags.tagid = tags.id
       WHERE itemtags.itemid = ${itemId}
   `)
+    .then(response => {
+        return (response.rows);
+    })
+    .catch(errors => console.log(errors));
 }
 
 //Get all items for a given tag
@@ -130,9 +134,13 @@ export function itemsByTag() {
   return pool.query(`
     SELECT * FROM items
     INNER JOIN itemtags
-        ON itemtags.itemid = item.itemid
+        ON itemtags.itemid = item.id
     WHERE itemtags.tagid = ${tagId}
   `)
+    .then(response => {
+        return (response.rows);
+    })
+    .catch(errors => console.log(errors));
 }
 
 
