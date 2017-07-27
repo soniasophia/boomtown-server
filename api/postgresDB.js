@@ -108,5 +108,32 @@ export function postNewItem(newItem) {
       .catch(errors => console.log(errors));
 }
 
+// Get all tags
+export function getTags() {
+  return pool.query(`SELECT * FROM tags`)
+    .then(response => response.rows)
+    .catch(errors => console.log(errors));
+}
+
+//Get all tags for a given item
+export function getItemTags(itemId) {
+  return pool.query(`
+    SELECT tags.title as tagname
+      FROM tags INNER JOIN itemtags 
+          ON itemtags.tagid = tags.id
+      WHERE itemtags.itemid = ${itemId}
+  `)
+}
+
+//Get all items for a given tag
+export function itemsByTag() {
+  return pool.query(`
+    SELECT * FROM items
+    INNER JOIN itemtags
+        ON itemtags.itemid = item.itemid
+    WHERE itemtags.tagid = ${tagId}
+  `)
+}
+
 
 
