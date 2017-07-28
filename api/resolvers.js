@@ -23,7 +23,7 @@ const resolveFunctions = {
   },
 
   Item: {
-    tags: (items) => {
+    tags: (item) => {
       return psql.getItemTags(item.id);
     },
     itemowner(item, args, context) {
@@ -54,7 +54,7 @@ const resolveFunctions = {
       //   imageurl: args.imageurl,
       //   itemowner: args.itemowner,
       //   description: args.description,
-      //   createdon: Math.floor(Date.now() / 1000),
+      //   created: Math.floor(Date.now() / 1000),
       //   tags: args.tags,
       //   available: true,
       //   borrower: null

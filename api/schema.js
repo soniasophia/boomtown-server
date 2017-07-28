@@ -18,7 +18,7 @@ const typeDefs = `
     imageurl: String
     tags: [Tag]!
     itemowner: User!
-    createdon: Int!
+    created: String!
     available: Boolean!
     borrower: User
   }

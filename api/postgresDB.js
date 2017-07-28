@@ -63,7 +63,9 @@ export function createUser(args) {
 
 export function getItems() {
   return pool.query(`SELECT * FROM items`)
-    .then(response => response.rows)
+    .then(response => {
+      return response.rows
+    })
     .catch(errors => console.log(errors));
 }
 
@@ -119,10 +121,10 @@ export function getTags() {
 //Get all tags for a given item
 export function getItemTags(itemId) {
   return pool.query(`
-    SELECT tags.title as tagname
-      FROM tags INNER JOIN itemtags 
-          ON itemtags.tagid = tags.id
-      WHERE itemtags.itemid = ${itemId}
+    SELECT tags.title FROM tags
+    INNER JOIN itemtags
+        ON itemtags.tagid = tags.id
+    WHERE itemtags.itemid = ${itemId}
   `)
     .then(response => {
       return (response.rows);
