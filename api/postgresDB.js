@@ -74,7 +74,6 @@ export function getItem(id) {
     try {
       let item = await pool.query(`SELECT * FROM items WHERE id = '${id}'`)
       item = (item.rows)[0];
-      // item = {...item, imageurl: fbuser.imageurl}
       resolve(item);
     } catch (e) {
       console.log(e);

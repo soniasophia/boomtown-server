@@ -49,18 +49,6 @@ const resolveFunctions = {
     Mutation: {
     addItem(root, args) {
       return psql.newItem(args)
-      // const newItem = {
-      //   title: args.title,
-      //   imageurl: args.imageurl,
-      //   itemowner: args.itemowner,
-      //   description: args.description,
-      //   created: Math.floor(Date.now() / 1000),
-      //   tags: args.tags,
-      //   available: true,
-      //   borrower: null
-      // };
-
-      // return json.postNewItem(newItem)
     },
 
     addUser(root, args, context) {

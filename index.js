@@ -11,6 +11,7 @@ import admin from './database/firebase';
 import cors from 'cors';
 
 import createLoaders from './api/loaders';
+import firebaseAuthMiddleware from './api/middleware';
 
 const GQL_PORT = 5000;
 const app = express();
@@ -35,6 +36,7 @@ app.use(bodyParser.json());
 //   }
 // });
 
+app.use('/graphql', firebaseAuthMiddleware)
 
 app.use('/graphql', graphqlExpress(function(req, res) {
   return {
