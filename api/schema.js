@@ -56,6 +56,11 @@ const typeDefs = `
       bio: String
       password: String!
     ): User
+
+    borrowItem(
+      id: ID!
+      borrower: ID!
+    ): Item
   }
 `;
 

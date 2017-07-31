@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import * as json from './jsonServer';
+// import * as json from './jsonServer';
 import pool from '../database/index';
-import { getUsers, getUser } from './postgresDB';
+// import { getUsers, getUser } from './postgresDB';
 import * as psql from './postgresDB';
 
 const resolveFunctions = {
@@ -53,6 +53,10 @@ const resolveFunctions = {
 
     addUser(root, args, context) {
       return psql.createUser(args, context)
+    },
+
+    borrowItem(root, args) {
+      return psql.borrowItem(args)
     }
   }
 };

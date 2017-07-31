@@ -1,22 +1,6 @@
 import pool from '../database/index';
 import admin from '../database/firebase';
 
-// function renameId(rows) {
-//       return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
-//         acc = {...row, id: row.userid}
-//         delete acc.userid
-//         return acc
-//       }),{})
-// }
-
-// function renameItemId(rows) {
-//       return rows.map((row) => Object.keys(row).reduce((acc, usr) => {
-//         acc = {...row, id: row.itemid}
-//         delete acc.itemid
-//         return acc
-//       }),{})
-// }
-
 export function getUsers() {
   return pool.query(`SELECT * FROM user_profiles`)
     .then(response => {
@@ -98,18 +82,6 @@ export function borrowedBy(id) {
     .catch(errors => console.log(errors));
 }
 
-export function postNewItem(newItem) {
-  return fetch('http://localhost:3001/items/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(newItem)
-  })
-    .then(response => response.json())
-    .catch(errors => console.log(errors));
-}
-
 // Get all tags
 export function getTags() {
   return pool.query(`SELECT * FROM tags`)
@@ -163,11 +135,22 @@ export function newItem(args, context) {
         text: `INSERT INTO itemtags(itemid, tagid) VALUES ${insertTag(args.tags)}`
       }
       const tags = await pool.query(tagQuery)
-      resolve({id: newItem.rows[0].id})
+      resolve({...newItem.rows[0]})
     } catch (error) {
       reject(error)
     }
   })
+}
+
+//Borrow an Item
+export function borrowItem(args) {
+  const query = {
+    text: `UPDATE items SET borrower=$1 WHERE id=$2 RETURNING *`,
+    values: [args.borrower, args.id]
+  }
+  return pool.query(query).then(response => {
+    return (response.rows[0]);
+  }).catch(errors => console.log(errors));
 }
 
 
